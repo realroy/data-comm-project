@@ -32,6 +32,7 @@ class IPScanner:
 
         total_time = time.time() - start_time
         display_result(total_time, result_queue)
+        return { total_time: total_time, result_queue: result_queue }
 
 
 def display_result(total_time, available_hosts):

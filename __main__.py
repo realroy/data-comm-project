@@ -1,7 +1,4 @@
 #!/usr/bin/python
-import os, threading, time
-from queue import Queue
-
 from ip_scanner import IPScanner
 
 
@@ -20,7 +17,7 @@ def main():
         retry=retry,
         max_thread=max_thread
     )
-    ip_scanner.run()
+    result = ip_scanner.run()
 
 if __name__ == "__main__":
     main()
