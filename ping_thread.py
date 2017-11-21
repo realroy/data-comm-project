@@ -1,6 +1,7 @@
 from threading import Thread
 from os import system
 from subprocess import check_output
+import requests
 
 NOT_FOUND = b'No ARP Entries Found.\r\n'
 
@@ -26,4 +27,16 @@ class PingThread(Thread):
                 info = output.decode('utf-8').splitlines()[3].split(" ")
                 for each in info:
                     if (len(each) > 0): result.append(each)
-                self.available_host.append({'ip_addr': result[0], 'mac_addr': result[1]})
+                manufacturer = self.fetch_manufacturer_name(result[1])
+                result.append(manufacturer)
+                self.available_host.append({
+                    'ip_addr': result[0],
+                    'mac_addr': result[1],
+                    'manufacturer': result[3]
+                })
+
+    def fetch_manufacturer_name(self, mac_addr):
+        r = requests.get('http://api.macvendors.com/{0}'.format(mac_addr))
+        while (r.status_code != 200):
+            r = requests.get('http://api.macvendors.com/{0}'.format(mac_addr))
+        return r.text
