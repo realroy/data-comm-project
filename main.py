@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import sys
 from ip_scanner import IPScanner
 
 
@@ -13,18 +14,18 @@ def main():
     #########################
     ip_scanner = IPScanner()
     ip_scanner.config(
-        start_ip=start_ip,
-        limit=limit,
-        default_gateway=default_gateway,
-        subnet_mask=subnet_mask,
-        retry=retry,
-        max_thread=max_thread
+        subnet_mask=str(sys.argv[1]),
+        default_gateway=str(sys.argv[2]),
+        start_ip=str(sys.argv[3]),
+        limit=int(sys.argv[4]),
+        retry=int(sys.argv[5]),
+        max_thread=int(sys.argv[6])
     )
     total_time, available_hosts = ip_scanner.run()
     print("Start scanning from {0} to {1}".format(ip_scanner.hosts[0], ip_scanner.hosts[-1]))
     print('Total time: ', total_time, ' sec.')
     for host in available_hosts: print(host)
-    ip_scanner.save_to_csv('', 'test')
+    ip_scanner.save_to_csv('', sys.argv[7])
 
 if __name__ == "__main__":
     main()

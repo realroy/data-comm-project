@@ -19,16 +19,16 @@ class IPScanner:
         self.default_gateway = IPv4Address('0.0.0.0')
 
     def config(self, subnet_mask, default_gateway, start_ip, limit, retry, max_thread):
-        self.start_ip = IPv4Address(start_ip)
-        self.subnet_mask = self.figure_out_subnet_mask(subnet_mask)
-        self.default_gateway = IPv4Address(default_gateway)
+        self.start_ip = IPv4Address(str(start_ip))
+        self.subnet_mask = self.figure_out_subnet_mask(str(subnet_mask))
+        self.default_gateway = IPv4Address(str(default_gateway))
         start_index = (int(self.start_ip) - 1) - int(self.default_gateway)
-        last_index = start_index + limit
+        last_index = start_index + int(limit)
         all_hosts = ip_network('{0}{1}'.format(self.default_gateway, self.subnet_mask)).hosts()
         self.hosts = list(all_hosts)[start_index: last_index]
         self.total_task = len(self.hosts)
-        self.retry = retry
-        self.max_thread = max_thread
+        self.retry = int(retry)
+        self.max_thread = int(max_thread)
 
 
     def run(self):
